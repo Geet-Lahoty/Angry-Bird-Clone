@@ -50,14 +50,8 @@ public class Bird {
         g.fillOval(x + 1, y - 8, 10, 10); // Left eye
         g.fillOval(x + 11, y - 8, 10, 10); // Right eye
 
-        // Angry Eyebrows
-        g.setColor(Color.BLACK);
-        g.fillPolygon(new int[] { x - 2, x + 10, x + 11, x - 1 }, new int[] { y - 13, y - 7, y - 5, y - 10 }, 4); // left
-                                                                                                                  // brow
-        g.fillPolygon(new int[] { x + 10, x + 23, x + 24, x + 12 }, new int[] { y - 7, y - 11, y - 8, y - 5 }, 4); // right
-                                                                                                                   // brow
-
         // Pupils
+        g.setColor(Color.BLACK);
         g.fillOval(x + 5, y - 5, 4, 4);
         g.fillOval(x + 13, y - 5, 4, 4);
 
