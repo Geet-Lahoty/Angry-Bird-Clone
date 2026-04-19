@@ -11,12 +11,18 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements ActionListener {
+    // gemini start
+    private GameWindow gameWindow;
+    private int currentLevel = 1;
+    // gemini end
     private Timer gameLoop;
     private Slingshot slingshot;
     private Bird bird;
@@ -30,8 +36,11 @@ public class GamePanel extends JPanel implements ActionListener {
     private boolean gameOver = false;
     private boolean won = false;
 
-    public GamePanel() {
-        initGame();
+    // gemini start
+    public GamePanel(GameWindow gameWindow) {
+        this.gameWindow = gameWindow;
+        // initGame() is now replaced by loadLevel(), called from GameWindow
+        // gemini end
 
         // Setup Mouse Listeners for drag and drop
         MouseAdapter mouseAdapter = new MouseAdapter() {
@@ -84,28 +93,76 @@ public class GamePanel extends JPanel implements ActionListener {
         addMouseListener(mouseAdapter);
         addMouseMotionListener(mouseAdapter);
 
+        // gemini start
+        // The key listener for reset is handled here so it's only active during the
+        // game.
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_R) {
+                    resetGame();
+                }
+                // A key to go back to menu
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    gameWindow.showMenu();
+                }
+            }
+        });
+        setFocusable(true); // Important for KeyListener to work on JPanel
+        // gemini end
+
         // Start Game loop timer
         gameLoop = new Timer(1000 / Constants.FPS, this);
         gameLoop.start();
     }
 
-    private void initGame() {
+    // gemini start
+    /**
+     * Sets up the game for a specific level.
+     * 
+     * @param level The level number to load.
+     */
+    public void loadLevel(int level) {
+        this.currentLevel = level;
+
         // Initialize objects
         slingshot = new Slingshot(150, Constants.GROUND_Y - 100);
         bird = new Bird(slingshot.position.x, slingshot.position.y);
         birdFired = false;
 
-        // Reset Game State
         birdsRemaining = 3;
         gameOver = false;
         won = false;
 
-        // Add some target Pigs
+        // Add target Pigs based on level
         pigs = new ArrayList<>();
-        pigs.add(new Pig(600, Constants.GROUND_Y - 20));
-        pigs.add(new Pig(650, Constants.GROUND_Y - 20));
-        pigs.add(new Pig(625, Constants.GROUND_Y - 60));
+        switch (level) {
+            // gemini start
+            case 2:
+                // Level 2: A small pyramid
+                pigs.add(new Pig(600, Constants.GROUND_Y - 20));
+                pigs.add(new Pig(680, Constants.GROUND_Y - 20));
+                pigs.add(new Pig(640, Constants.GROUND_Y - 60));
+                break;
+            case 3:
+                // Level 3: A more complex structure
+                pigs.add(new Pig(550, Constants.GROUND_Y - 20));
+                pigs.add(new Pig(630, Constants.GROUND_Y - 20));
+                pigs.add(new Pig(590, Constants.GROUND_Y - 60)); // Pig on top of first two
+                pigs.add(new Pig(720, Constants.GROUND_Y - 20)); // A single pig further away
+                break;
+            case 1:
+            default:
+                // Level 1: A vertical stack of three pigs
+                pigs.add(new Pig(600, Constants.GROUND_Y - 20));
+                pigs.add(new Pig(600, Constants.GROUND_Y - 60));
+                pigs.add(new Pig(600, Constants.GROUND_Y - 100));
+                break;
+        }
+
+        requestFocusInWindow(); // Make sure panel has focus for key events
     }
+    // gemini end
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -140,8 +197,12 @@ public class GamePanel extends JPanel implements ActionListener {
 
         // 3. Draw Instructions & HUD
         g.setColor(Color.BLACK);
-        g.drawString("Drag the red bird to shoot it. Press 'R' on keyboard to reset.", 10, 20);
+        // gemini start
+        g.drawString("Drag bird to shoot. 'R' to reset. 'ESC' for menu.", 10, 20);
         g.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 16));
+        g.drawString("Level: " + currentLevel, Constants.SCREEN_WIDTH - 100, 25);
+        g.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 16)); // Reset font
+        // gemini end
         g.drawString("Birds Remaining: " + birdsRemaining, 10, 45);
 
         // 4. Draw Game Entities
@@ -169,9 +230,15 @@ public class GamePanel extends JPanel implements ActionListener {
 
             g.setColor(Color.WHITE);
             g.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 24));
-            String subMsg = "Press 'R' to Restart";
+            // gemini start
+            String subMsg = "Press 'R' to Restart Level";
             int subWidth = g.getFontMetrics().stringWidth(subMsg);
             g.drawString(subMsg, (Constants.SCREEN_WIDTH - subWidth) / 2, Constants.SCREEN_HEIGHT / 2 + 30);
+
+            String menuMsg = "Press 'ESC' for Menu";
+            int menuWidth = g.getFontMetrics().stringWidth(menuMsg);
+            g.drawString(menuMsg, (Constants.SCREEN_WIDTH - menuWidth) / 2, Constants.SCREEN_HEIGHT / 2 + 60);
+            // gemini end
         }
     }
 
@@ -231,7 +298,9 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void resetGame() {
-        initGame();
+        // gemini start
+        loadLevel(currentLevel); // Reset the current level
+        // gemini end
         repaint();
     }
 }
