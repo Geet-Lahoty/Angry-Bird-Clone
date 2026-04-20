@@ -1,6 +1,6 @@
+//harshil
 package main;
 
-// gemini start
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import java.awt.Color;
@@ -13,37 +13,19 @@ import utils.Constants;
 public class MenuPanel extends JPanel implements ActionListener {
     private GameWindow gameWindow;
     private JButton playButton;
-    private JButton highscoreButton;
     private JButton exitButton;
 
     public MenuPanel(GameWindow gameWindow) {
         this.gameWindow = gameWindow;
         setLayout(null); // Use absolute positioning for simplicity
 
-        playButton = new JButton("Play (Level 1)");
-        playButton.setBounds(300, 200, 200, 50);
+        playButton = new JButton("Play");
+        playButton.setBounds(300, 250, 200, 50);
         playButton.addActionListener(this);
         add(playButton);
 
-        JButton level2Button = new JButton("Level 2");
-        level2Button.setBounds(300, 270, 95, 50);
-        level2Button.addActionListener(e -> gameWindow.startGame(2));
-        add(level2Button);
-
-        JButton level3Button = new JButton("Level 3");
-        level3Button.setBounds(405, 270, 95, 50);
-        level3Button.addActionListener(e -> gameWindow.startGame(3));
-        add(level3Button);
-
-        highscoreButton = new JButton("Highscore");
-        highscoreButton.setBounds(300, 340, 200, 50);
-        // gemini start
-        highscoreButton.addActionListener(this);
-        // gemini end
-        add(highscoreButton);
-
         exitButton = new JButton("Exit");
-        exitButton.setBounds(300, 410, 200, 50);
+        exitButton.setBounds(300, 320, 200, 50);
         exitButton.addActionListener(this);
         add(exitButton);
     }
@@ -67,7 +49,7 @@ public class MenuPanel extends JPanel implements ActionListener {
 
         g.setColor(Color.BLACK);
         g.setFont(new Font("Arial", Font.BOLD, 48));
-        String title = "Angry Birds Clone";
+        String title = "Angry Birds ";
         int width = g.getFontMetrics().stringWidth(title);
         g.drawString(title, (Constants.SCREEN_WIDTH - width) / 2, 150);
     }
@@ -75,14 +57,10 @@ public class MenuPanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == playButton) {
-            gameWindow.startGame(1); // Start at level 1
-            // gemini start
-        } else if (e.getSource() == highscoreButton) {
-            gameWindow.showHighscore();
-            // gemini end
+            gameWindow.startGame();
         } else if (e.getSource() == exitButton) {
             System.exit(0);
         }
     }
 }
-// gemini end
+// mistry

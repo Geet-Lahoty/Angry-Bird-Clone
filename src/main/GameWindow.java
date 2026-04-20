@@ -1,71 +1,62 @@
 package main;
 
 import javax.swing.JFrame;
-// gemini start
+//harshil
 import javax.swing.JPanel;
 import java.awt.CardLayout;
-// gemini end
+// mistry
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import utils.Constants;
 
 public class GameWindow {
-    // gemini start
+    // harshil
     private JFrame frame;
     private GamePanel gamePanel;
     private MenuPanel menuPanel;
-    // gemini start
-    private HighscorePanel highscorePanel;
-    // gemini end
     private JPanel mainPanel;
     private CardLayout cardLayout;
-    // gemini end
+    // mistry
 
     public GameWindow() {
-        // gemini start
-        frame = new JFrame("Angry Birds Clone - Java");
+        // harshil
+        frame = new JFrame("Angry Birds  - Java");
 
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
 
         // Pass 'this' so panels can call back to GameWindow to switch views
         menuPanel = new MenuPanel(this);
-        gamePanel = new GamePanel(this);
+        gamePanel = new GamePanel(this); // Pass GameWindow to GamePanel
 
         mainPanel.add(menuPanel, "MENU");
         mainPanel.add(gamePanel, "GAME");
 
         frame.add(mainPanel);
-        // gemini end
+        // mistry
         frame.setSize(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null); // Center on screen
 
-        // gemini start
-        // The Key Listener for 'R' has been moved to GamePanel to be context-specific.
-        // gemini end
-        frame.setVisible(true);
-        // gemini start
+        // harshil
+        // Key listener moved to GamePanel to be active only during the game.
         showMenu(); // Start by showing the menu
-        // gemini end
+        // mistry
+
+        frame.setVisible(true);
     }
 
-    // gemini start
+    // harshil
     public void showMenu() {
         cardLayout.show(mainPanel, "MENU");
         menuPanel.requestFocusInWindow();
     }
 
-    // gemini start
-    public void showHighscore() {
-        cardLayout.show(mainPanel, "HIGHSCORE");
-        highscorePanel.requestFocusInWindow();
-    }
-    // gemini end
-
-    public void startGame(int level) {
-        gamePanel.loadLevel(level);
+    public void startGame() {
+        gamePanel.resetGame(); // Reset the game state every time we start
         cardLayout.show(mainPanel, "GAME");
         gamePanel.requestFocusInWindow();
     }
-    // gemini end
+    // mistry
 }
