@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class Pig {
+
     public Vector2D position;
     public int radius = 20;
     public boolean isAlive = true;
@@ -14,25 +15,26 @@ public class Pig {
     }
     
     public void draw(Graphics g) {
+
         if (isAlive) {
+
             int x = (int)position.x;
             int y = (int)position.y;
             
             // Ears
-            g.setColor(new Color(0, 180, 0)); // Darker green
-            g.fillOval(x - 18, y - 20, 14, 14); // Left ear
-            g.fillOval(x + 4, y - 20, 14, 14);  // Right ear
+            g.setColor(new Color(0, 180, 0)); 
+            g.fillOval(x - 18, y - 20, 14, 14); 
+            g.fillOval(x + 4, y - 20, 14, 14);  
             
-            // Ear holes
-            g.setColor(new Color(0, 100, 0)); // Very dark green
+            g.setColor(new Color(0, 100, 0)); 
             g.fillOval(x - 15, y - 17, 8, 8);
             g.fillOval(x + 7, y - 17, 8, 8);
 
             // Main Body
-            g.setColor(new Color(0, 255, 0)); // Bright green
+            g.setColor(new Color(0, 255, 0)); 
             g.fillOval(x - radius, y - radius, radius * 2, radius * 2);
             
-            // Snout (light green oval)
+            // Snout (nose)
             g.setColor(new Color(153, 255, 153));
             g.fillOval(x - 10, y + 2, 20, 14);
             
@@ -43,13 +45,13 @@ public class Pig {
             
             // White of the Eyes
             g.setColor(Color.WHITE);
-            g.fillOval(x - 14, y - 8, 12, 12); // Left eye
-            g.fillOval(x + 2, y - 8, 12, 12);  // Right eye
+            g.fillOval(x - 14, y - 8, 12, 12); 
+            g.fillOval(x + 2, y - 8, 12, 12);  
             
-            // Pupils (Looking left towards the bird)
+            // Pupils 
             g.setColor(Color.BLACK);
-            g.fillOval(x - 12, y - 4, 4, 4); // Left pupil
-            g.fillOval(x + 4, y - 4, 4, 4);  // Right pupil
+            g.fillOval(x - 12, y - 4, 4, 4); 
+            g.fillOval(x + 4, y - 4, 4, 4); 
         }
     }
 }

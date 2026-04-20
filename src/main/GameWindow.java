@@ -6,7 +6,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class GameWindow {
+
     public GameWindow() {
+
         JFrame frame = new JFrame("Angry Birds Clone - Java");
         GamePanel gamePanel = new GamePanel();
         
@@ -14,12 +16,14 @@ public class GameWindow {
         frame.setSize(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
-        frame.setLocationRelativeTo(null); // Center on screen
+        frame.setLocationRelativeTo(null); 
         
-        // Add Key Listener to reset game when 'R' is pressed
+        // Restart listener
         frame.addKeyListener(new KeyAdapter() {
+
             @Override
             public void keyPressed(KeyEvent e) {
+                
                 if (e.getKeyCode() == KeyEvent.VK_R) {
                     gamePanel.resetGame();
                 }
